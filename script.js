@@ -163,3 +163,52 @@ reviewForm.addEventListener('submit', function(event) {
 });
 
 displayReviews();
+/* ---------- Модальное окно галереи ---------- */
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
+const modalDescription = document.getElementById('modalDescription');
+const modalPrice = document.getElementById('modalPrice');
+const modalClose = document.querySelector('.modal-close');
+
+// Находим все кнопки "Подробнее"
+const detailButtons = document.querySelectorAll('.details-btn');
+
+// Вешаем обработчик на каждую кнопку
+detailButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        // Находим родительскую карточку
+        const card = this.closest('.room-card');
+        
+        // Извлекаем данные
+        const title = card.querySelector('h3').textContent;
+        const description = card.querySelector('p').textContent;   // первый <p> — описание
+        const price = card.querySelector('.price').textContent;
+        
+        // Заполняем модальное окно
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+        modalPrice.textContent = 'Цена: ' + price;
+        
+        // Показываем окно
+        modal.style.display = 'block';
+    });
+});
+
+// Закрытие по клику на крестик
+modalClose.addEventListener('click', function() {
+    modal.style.display = 'none';
+});
+
+// Закрытие по клику вне содержимого окна
+window.addEventListener('click', function(event) {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
+// Закрытие по клавише Escape (бонус)
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && modal.style.display === 'block') {
+        modal.style.display = 'none';
+    }
+});
