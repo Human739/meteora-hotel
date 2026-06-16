@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отель Метеора</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header>
+        <h1>Отель Метеора</h1>
+        <nav>
+            <a href="#home">Главная</a>
+            <a href="#rooms">Номера</a>
+            <a href="#booking">Бронирование</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+    </header>
+
+    <!-- Главное изображение -->
+    <section id="home">
+        <h2>Добро пожаловать в наш отель!</h2>
+        <p>Уютное место отдыха в сердце гор</p>
+    </section>
+
+    <!-- Номера -->
+    <section id="rooms">
+        <h2>Наши номера</h2>
+        
+        <div class="room">
+            <h3>Стандартный номер</h3>
+            <p>Двуспальная кровать, ванная комната, вид на город</p>
+            <p>Цена: 2000₽ за ночь</p>
+        </div>
+
+        <div class="room">
+            <h3>Люкс</h3>
+            <p>2 комнаты, джакузи, панорамный балкон</p>
+            <p>Цена: 10000₽ за ночь</p>
+        </div>
+
+        <div class="room">
+            <h3>Семейный номер</h3>
+            <p>3 комнаты, кухня, гостиная</p>
+            <p>Цена: 20000₽ за ночь</p>
+        </div>
+    </section>
+
+    <!-- Форма бронирования -->
+    <form id="bookingForm">
+    <input type="text" placeholder="Ваше имя" required>
+    <input type="email" placeholder="Ваша почта" required>
+    <select id="roomSelect" required>
+        <option value="">Выберите тип номера</option>
+        <option value="standard">Стандартный номер</option>
+        <option value="luxe">Люкс</option>
+        <option value="family">Семейный номер</option>
+    </select>
+    <button type="submit">Забронировать</button>
+</form>
+
+           <section id="reviews">
+            <h2>Отзывы наших гостей</h2>
+            <div id="reviewsList">
+                <!-- Отзывы будут появляться здесь через JavaScript -->
+            </div>
+
+            <h3 style="margin-top: 2rem; color: #667eea;">Оставить свой отзыв</h3>
+            <form id="reviewForm">
+                <input type="text" placeholder="Ваше имя" required>
+                <textarea placeholder="Ваш отзыв" rows="4" required></textarea>
+                <select required>
+                    <option value="">Оценка (1-5 звёзд)</option>
+                    <option value="5">⭐⭐⭐⭐⭐ (5 звёзд)</option>
+                    <option value="4">⭐⭐⭐⭐ (4 звезды)</option>
+                    <option value="3">⭐⭐⭐ (3 звезды)</option>
+                    <option value="2">⭐⭐ (2 звезды)</option>
+                    <option value="1">⭐ (1 звезда)</option>
+                </select>
+                <button type="submit">Отправить отзыв</button>
+            </form>
+        </section>
+    <!-- Контакты -->
+    <footer id="contacts">
+        <h3>Свяжитесь с нами</h3>
+        <p>Телефон: +7 (999) 123-45-67</p>
+        <p>Email: info@meteora.ru</p>
+        <p>&copy; 2026 Отель Метеора</p>
+    </footer>
+<script src="script.js"></script>
+
+</body>
+</html>
