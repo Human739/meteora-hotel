@@ -81,18 +81,17 @@ bookingForm.addEventListener('submit', function(event) {
 loadSavedData();
 roomSelect.dispatchEvent(new Event('change'));
 
-/* ---------- Отзывы с рейтингом и фильтрацией ---------- */
+/* ---------- Отзывы с Firebase и фильтрацией ---------- */
 const reviewsContainer = document.getElementById('reviews-container');
 const reviewForm = document.getElementById('review-form');
 const reviewNameInput = document.getElementById('review-name');
 const reviewTextInput = document.getElementById('review-text');
 
-// Хранилище отзывов
-let reviews = JSON.parse(localStorage.getItem('hotelReviews')) || [];
-// Текущий фильтр (по умолчанию показываем все)
+// Массив отзывов теперь будет наполняться из Firebase
+let reviews = [];
 let currentFilter = 'all';
 
-// Функция отрисовки звёзд (золотые ★ и серые ☆)
+// Функция отрисовки звёзд
 function renderStars(rating) {
     let starsHTML = '';
     for (let i = 1; i <= 5; i++) {
@@ -101,9 +100,8 @@ function renderStars(rating) {
     return starsHTML;
 }
 
-// Рендеринг отзывов с учётом фильтра
+// Рендеринг отзывов с учётом фильтра (эта функция осталась почти без изменений)
 function renderReviews() {
-    // Фильтруем отзывы
     let filtered = reviews;
     if (currentFilter !== 'all') {
         filtered = reviews.filter(review => review.rating == currentFilter);
@@ -123,7 +121,6 @@ function renderReviews() {
         const header = document.createElement('h4');
         header.innerHTML = `${review.name} <small>${review.date}</small>`;
 
-        // Блок звёзд
         const starsDiv = document.createElement('div');
         starsDiv.className = 'stars-display';
         starsDiv.innerHTML = renderStars(review.rating);
@@ -138,14 +135,8 @@ function renderReviews() {
     });
 }
 
-// Сохранение в localStorage
-function saveReviews() {
-    localStorage.setItem('hotelReviews', JSON.stringify(reviews));
-}
-
-// Создание кнопок фильтрации (добавляем их перед контейнером)
+// Создание кнопок фильтра (без изменений)
 function createFilterButtons() {
-    // Проверяем, нет ли уже фильтров
     if (document.querySelector('.reviews-filters')) return;
 
     const filtersDiv = document.createElement('div');
@@ -167,19 +158,18 @@ function createFilterButtons() {
         btn.dataset.filter = f.value;
         if (f.value === currentFilter) btn.classList.add('active');
         btn.addEventListener('click', function() {
-            // Меняем активный класс
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            // Применяем фильтр
             currentFilter = this.dataset.filter;
             renderReviews();
         });
         filtersDiv.appendChild(btn);
     });
 
-    // Вставляем фильтры перед контейнером отзывов
     reviewsContainer.parentNode.insertBefore(filtersDiv, reviewsContainer);
 }
+
+// ========== НОВОЕ: работа с Firebase ==========
 
 // Отправка отзыва
 reviewForm.addEventListener('submit', function(event) {
@@ -209,15 +199,49 @@ reviewForm.addEventListener('submit', function(event) {
         date: new Date().toLocaleString('ru-RU')
     };
 
-    reviews.unshift(newReview);
-    saveReviews();
-    renderReviews();
-    reviewForm.reset();
+    // Отправляем в Firebase (путь 'reviews')
+    const db = window.firebaseDB;
+    if (!db) {
+        alert('Ошибка подключения к базе данных. Попробуйте позже.');
+        return;
+    }
+    const reviewsRef = ref(db, 'reviews');
+    push(reviewsRef, newReview)
+        .then(() => {
+            reviewForm.reset();
+            // Массив reviews обновится автоматически через onValue
+        })
+        .catch(error => {
+            console.error('Ошибка отправки:', error);
+            alert('Не удалось отправить отзыв.');
+        });
 });
 
-// Инициализация при загрузке
+// Слушатель изменений в базе — автоматически обновляет отзывы
+function startListening() {
+    const db = window.firebaseDB;
+    if (!db) {
+        console.warn('Firebase не инициализирована, отзывы не будут загружены.');
+        return;
+    }
+
+    const reviewsRef = ref(db, 'reviews');
+    onValue(reviewsRef, (snapshot) => {
+        const data = snapshot.val();
+        // Преобразуем объект Firebase в массив
+        reviews = [];
+        if (data) {
+            reviews = Object.values(data);  // все отзывы как массив
+            // Сортируем по дате (новые сверху) — если хочешь, можно раскомментировать
+            // reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+        renderReviews();
+    });
+}
+
+// Запуск при загрузке страницы
 createFilterButtons();
-renderReviews();
+startListening();
 /* ---------- Модальное окно галереи ---------- */
 const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modalTitle');
