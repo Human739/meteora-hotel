@@ -81,88 +81,143 @@ bookingForm.addEventListener('submit', function(event) {
 loadSavedData();
 roomSelect.dispatchEvent(new Event('change'));
 
-// ====== ОТЗЫВЫ ======
-const reviewForm = document.getElementById('reviewForm');
-const reviewsList = document.getElementById('reviewsList');
+/* ---------- Отзывы с рейтингом и фильтрацией ---------- */
+const reviewsContainer = document.getElementById('reviews-container');
+const reviewForm = document.getElementById('review-form');
+const reviewNameInput = document.getElementById('review-name');
+const reviewTextInput = document.getElementById('review-text');
 
-const defaultReviews = [
-    { name: 'Иван Петров', rating: 5, text: 'Отличный отель! Чистота, комфорт, вежливый персонал. Обязательно вернёмся!' },
-    { name: 'Мария Сидорова', rating: 4, text: 'Красивый вид на горы, хороший завтрак. Можно улучшить Wi-Fi.' },
-    { name: 'Александр Козлов', rating: 5, text: 'Идеальное место для отдыха с семьёй. Рекомендую всем друзьям!' }
-];
+// Хранилище отзывов
+let reviews = JSON.parse(localStorage.getItem('hotelReviews')) || [];
+// Текущий фильтр (по умолчанию показываем все)
+let currentFilter = 'all';
 
-function loadReviews() {
-    const savedReviews = localStorage.getItem('reviews');
-    return savedReviews ? JSON.parse(savedReviews) : defaultReviews;
+// Функция отрисовки звёзд (золотые ★ и серые ☆)
+function renderStars(rating) {
+    let starsHTML = '';
+    for (let i = 1; i <= 5; i++) {
+        starsHTML += (i <= rating) ? '★' : '☆';
+    }
+    return starsHTML;
 }
 
-function saveReviews(reviews) {
-    localStorage.setItem('reviews', JSON.stringify(reviews));
-}
+// Рендеринг отзывов с учётом фильтра
+function renderReviews() {
+    // Фильтруем отзывы
+    let filtered = reviews;
+    if (currentFilter !== 'all') {
+        filtered = reviews.filter(review => review.rating == currentFilter);
+    }
 
-function displayReviews() {
-    const reviews = loadReviews();
-    reviewsList.innerHTML = '';
+    reviewsContainer.innerHTML = '';
 
-    if (reviews.length === 0) {
-        reviewsList.innerHTML = '<p style="color: #999;">Пока нет отзывов. Будьте первым!</p>';
+    if (filtered.length === 0) {
+        reviewsContainer.innerHTML = '<p>Нет отзывов, соответствующих фильтру.</p>';
         return;
     }
 
-    reviews.forEach((review) => {
-        const reviewDiv = document.createElement('div');
-        reviewDiv.className = 'review';
-        reviewDiv.innerHTML = `
-            <div class="review-header">
-                <span class="review-name">${review.name}</span>
-                <span class="review-rating">${'⭐'.repeat(review.rating)}</span>
-            </div>
-            <p class="review-text">${review.text}</p>
-        `;
-        reviewsList.appendChild(reviewDiv);
+    filtered.forEach(review => {
+        const card = document.createElement('div');
+        card.className = 'review-card';
+
+        const header = document.createElement('h4');
+        header.innerHTML = `${review.name} <small>${review.date}</small>`;
+
+        // Блок звёзд
+        const starsDiv = document.createElement('div');
+        starsDiv.className = 'stars-display';
+        starsDiv.innerHTML = renderStars(review.rating);
+
+        const text = document.createElement('p');
+        text.textContent = review.text;
+
+        card.appendChild(header);
+        card.appendChild(starsDiv);
+        card.appendChild(text);
+        reviewsContainer.appendChild(card);
     });
 }
 
+// Сохранение в localStorage
+function saveReviews() {
+    localStorage.setItem('hotelReviews', JSON.stringify(reviews));
+}
+
+// Создание кнопок фильтрации (добавляем их перед контейнером)
+function createFilterButtons() {
+    // Проверяем, нет ли уже фильтров
+    if (document.querySelector('.reviews-filters')) return;
+
+    const filtersDiv = document.createElement('div');
+    filtersDiv.className = 'reviews-filters';
+
+    const filters = [
+        { label: 'Все', value: 'all' },
+        { label: '5 звёзд', value: '5' },
+        { label: '4 звезды', value: '4' },
+        { label: '3 звезды', value: '3' },
+        { label: '2 звезды', value: '2' },
+        { label: '1 звезда', value: '1' }
+    ];
+
+    filters.forEach(f => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.textContent = f.label;
+        btn.dataset.filter = f.value;
+        if (f.value === currentFilter) btn.classList.add('active');
+        btn.addEventListener('click', function() {
+            // Меняем активный класс
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            // Применяем фильтр
+            currentFilter = this.dataset.filter;
+            renderReviews();
+        });
+        filtersDiv.appendChild(btn);
+    });
+
+    // Вставляем фильтры перед контейнером отзывов
+    reviewsContainer.parentNode.insertBefore(filtersDiv, reviewsContainer);
+}
+
+// Отправка отзыва
 reviewForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const inputs = this.querySelectorAll('input, textarea, select');
-    const reviewName = inputs[0].value.trim();
-    const reviewText = inputs[1].value.trim();
-    const reviewRating = inputs[2].value;
+    const name = reviewNameInput.value.trim();
+    const text = reviewTextInput.value.trim();
+    const ratingInput = document.querySelector('input[name="rating"]:checked');
 
-    if (reviewName.length < 2) {
-        alert('Имя должно содержать минимум 2 буквы!');
+    if (name.length < 2) {
+        alert('Имя должно быть не короче 2 символов');
         return;
     }
-
-    if (reviewText.length < 10) {
-        alert('Отзыв должен быть минимум 10 символов!');
+    if (text.length < 10) {
+        alert('Отзыв должен содержать хотя бы 10 символов');
         return;
     }
-
-    if (!reviewRating) {
-        alert('Пожалуйста, выберите оценку!');
+    if (!ratingInput) {
+        alert('Пожалуйста, поставьте оценку!');
         return;
     }
 
     const newReview = {
-        name: reviewName,
-        rating: parseInt(reviewRating),
-        text: reviewText
+        name: name,
+        text: text,
+        rating: parseInt(ratingInput.value),
+        date: new Date().toLocaleString('ru-RU')
     };
 
-    const reviews = loadReviews();
     reviews.unshift(newReview);
-    saveReviews(reviews);
-
-    displayReviews();
-    this.reset();
-
-    alert(`Спасибо за отзыв, ${reviewName}! 🙏`);
+    saveReviews();
+    renderReviews();
+    reviewForm.reset();
 });
 
-displayReviews();
+// Инициализация при загрузке
+createFilterButtons();
+renderReviews();
 /* ---------- Модальное окно галереи ---------- */
 const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modalTitle');

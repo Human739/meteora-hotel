@@ -351,3 +351,64 @@ textarea:focus {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+/* ---------- Рейтинг и звёзды ---------- */
+.rating-input {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.5rem 0;
+}
+
+.stars {
+    display: flex;
+    flex-direction: row-reverse;  /* чтобы выделение шло справа налево */
+    justify-content: flex-end;
+}
+
+.stars input {
+    display: none;               /* прячем radio-кнопки */
+}
+
+.stars label {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.stars input:checked ~ label,
+.stars label:hover,
+.stars label:hover ~ label {
+    color: #f5a623;              /* золотой цвет звезды */
+}
+
+/* Звёзды в карточке отзыва */
+.review-card .stars-display {
+    color: #f5a623;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Фильтры */
+.reviews-filters {
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: #e0e0e0;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s, color 0.3s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: #667eea;
+    color: white;
+}

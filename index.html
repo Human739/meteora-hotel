@@ -105,28 +105,24 @@
         <option value="family">Семейный номер</option>
     </select>
     <button type="submit">Забронировать</button>
+<form id="review-form">
+    <input type="text" id="review-name" placeholder="Ваше имя" required>
+
+    <!-- Блок выбора рейтинга -->
+    <div class="rating-input">
+        <span>Ваша оценка:</span>
+        <div class="stars">
+            <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+            <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+            <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+            <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+            <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+        </div>
+    </div>
+
+    <textarea id="review-text" rows="4" placeholder="Поделитесь впечатлениями..." required></textarea>
+    <button type="submit">Отправить отзыв</button>
 </form>
-
-           <section id="reviews">
-            <h2>Отзывы наших гостей</h2>
-            <div id="reviewsList">
-                <!-- Отзывы будут появляться здесь через JavaScript -->
-            </div>
-
-            <h3 style="margin-top: 2rem; color: #667eea;">Оставить свой отзыв</h3>
-            <form id="reviewForm">
-                <input type="text" placeholder="Ваше имя" required>
-                <textarea placeholder="Ваш отзыв" rows="4" required></textarea>
-                <select required>
-                    <option value="">Оценка (1-5 звёзд)</option>
-                    <option value="5">⭐⭐⭐⭐⭐ (5 звёзд)</option>
-                    <option value="4">⭐⭐⭐⭐ (4 звезды)</option>
-                    <option value="3">⭐⭐⭐ (3 звезды)</option>
-                    <option value="2">⭐⭐ (2 звезды)</option>
-                    <option value="1">⭐ (1 звезда)</option>
-                </select>
-                <button type="submit">Отправить отзыв</button>
-            </form>
         </section>
     <!-- Контакты -->
     <footer id="contacts">
