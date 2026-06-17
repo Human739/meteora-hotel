@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Отель Метеора</title>
+    <title>Отель Альпийский</title>
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 
     <!-- Шапка сайта -->
     <header>
-        <h1>Отель Метеора</h1>
+        <h1>Отель Альпийский</h1>
         <nav>
             <a href="#home">Главная</a>
             <a href="#rooms">Номера</a>
+            <a href="#gallery">Галерея</a>
             <a href="#booking">Бронирование</a>
+            <a href="#reviews">Отзывы</a>
             <a href="#contacts">Контакты</a>
         </nav>
     </header>
@@ -26,133 +27,137 @@
         <p>Уютное место отдыха в сердце гор</p>
     </section>
 
-    <!-- Номера -->
+    <!-- Номера (кратко) -->
     <section id="rooms">
         <h2>Наши номера</h2>
-        
         <div class="room">
             <h3>Стандартный номер</h3>
             <p>Двуспальная кровать, ванная комната, вид на город</p>
-            <p>Цена: 2000₽ за ночь</p>
+            <p>Цена: 2000 ₽ за ночь</p>
         </div>
-
         <div class="room">
             <h3>Люкс</h3>
             <p>2 комнаты, джакузи, панорамный балкон</p>
-            <p>Цена: 10000₽ за ночь</p>
+            <p>Цена: 10000 ₽ за ночь</p>
         </div>
-
         <div class="room">
             <h3>Семейный номер</h3>
             <p>3 комнаты, кухня, гостиная</p>
-            <p>Цена: 20000₽ за ночь</p>
+            <p>Цена: 20000 ₽ за ночь</p>
         </div>
-        <!-- Галерея номеров -->
-<!-- Галерея номеров -->
-<section id="gallery">
-    <h2>Наши номера</h2>
-    <div class="gallery-grid">
-       <!-- Карточка 1: Стандартный -->
-<div class="room-card">
-    <img src="https://picsum.photos/400/250?random=1" alt="Стандартный номер">
-    <h3>Стандартный номер</h3>
-    <p>Уютный номер с двуспальной кроватью и видом на город.</p>
-    <p class="price">2000 ₽ / ночь</p>
-    <button class="details-btn">Подробнее</button>
-</div>
-
-<!-- Карточка 2: Люкс -->
-<div class="room-card">
-    <img src="https://picsum.photos/400/250?random=2" alt="Люкс номер">
-    <h3>Люкс</h3>
-    <p>Две комнаты, джакузи, панорамный балкон.</p>
-    <p class="price">10000 ₽ / ночь</p>
-    <button class="details-btn">Подробнее</button>
-</div>
-
-<!-- Карточка 3: Семейный -->
-<div class="room-card">
-    <img src="https://picsum.photos/400/250?random=3" alt="Семейный номер">
-    <h3>Семейный номер</h3>
-    <p>Три комнаты, кухня, гостиная — идеально для семьи.</p>
-    <p class="price">20000 ₽ / ночь</p>
-    <button class="details-btn">Подробнее</button>
-</div>
-        </div>
-    </div>
-</section>
-
-<!-- Модальное окно (пока скрыто) -->
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close">&times;</span>
-        <h3 id="modalTitle"></h3>
-        <p id="modalDescription"></p>
-        <p id="modalPrice"></p>
-    </div>
-</div>
-
     </section>
 
-    <!-- Форма бронирования -->
-    <form id="bookingForm">
-    <input type="text" placeholder="Ваше имя" required>
-    <input type="email" placeholder="Ваша почта" required>
-    <select id="roomSelect" required>
-        <option value="">Выберите тип номера</option>
-        <option value="standard">Стандартный номер</option>
-        <option value="luxe">Люкс</option>
-        <option value="family">Семейный номер</option>
-    </select>
-    <button type="submit">Забронировать</button>
-<form id="review-form">
-    <input type="text" id="review-name" placeholder="Ваше имя" required>
+    <!-- Галерея номеров -->
+    <section id="gallery">
+        <h2>Галерея номеров</h2>
+        <div class="gallery-grid">
+            <div class="room-card">
+                <img src="https://picsum.photos/400/250?random=1" alt="Стандартный номер">
+                <h3>Стандартный номер</h3>
+                <p>Уютный номер с двуспальной кроватью и видом на город.</p>
+                <p class="price">2000 ₽ / ночь</p>
+                <button class="details-btn">Подробнее</button>
+            </div>
+            <div class="room-card">
+                <img src="https://picsum.photos/400/250?random=2" alt="Люкс номер">
+                <h3>Люкс</h3>
+                <p>Две комнаты, джакузи, панорамный балкон.</p>
+                <p class="price">10000 ₽ / ночь</p>
+                <button class="details-btn">Подробнее</button>
+            </div>
+            <div class="room-card">
+                <img src="https://picsum.photos/400/250?random=3" alt="Семейный номер">
+                <h3>Семейный номер</h3>
+                <p>Три комнаты, кухня, гостиная — идеально для семьи.</p>
+                <p class="price">20000 ₽ / ночь</p>
+                <button class="details-btn">Подробнее</button>
+            </div>
+        </div>
+    </section>
 
-    <!-- Блок выбора рейтинга -->
-    <div class="rating-input">
-        <span>Ваша оценка:</span>
-        <div class="stars">
-            <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
-            <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
-            <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
-            <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
-            <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+    <!-- Модальное окно для галереи -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3 id="modalTitle"></h3>
+            <p id="modalDescription"></p>
+            <p id="modalPrice"></p>
         </div>
     </div>
 
-    <textarea id="review-text" rows="4" placeholder="Поделитесь впечатлениями..." required></textarea>
-    <button type="submit">Отправить отзыв</button>
-</form>
-        </section>
+    <!-- Форма бронирования -->
+    <section id="booking">
+        <h2>Забронировать номер</h2>
+        <form id="booking-form">
+            <input type="text" placeholder="Ваше имя" required>
+            <input type="email" placeholder="Ваша почта" required>
+            <input type="date" required>
+            <input type="date" required>
+            <select required>
+                <option value="">Выберите тип номера</option>
+                <option value="standard">Стандартный</option>
+                <option value="luxe">Люкс</option>
+                <option value="family">Семейный</option>
+            </select>
+            <button type="submit">Забронировать</button>
+        </form>
+    </section>
+
+    <!-- Отзывы -->
+    <section id="reviews">
+        <h2>Отзывы наших гостей</h2>
+
+        <div id="reviews-container"></div>
+
+        <div class="review-form">
+            <h3>Оставьте свой отзыв</h3>
+            <form id="review-form">
+                <input type="text" id="review-name" placeholder="Ваше имя" required>
+
+                <div class="rating-input">
+                    <span>Ваша оценка:</span>
+                    <div class="stars">
+                        <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                    </div>
+                </div>
+
+                <textarea id="review-text" rows="4" placeholder="Поделитесь впечатлениями..." required></textarea>
+                <button type="submit">Отправить отзыв</button>
+            </form>
+        </div>
+    </section>
+
     <!-- Контакты -->
     <footer id="contacts">
         <h3>Свяжитесь с нами</h3>
         <p>Телефон: +7 (999) 123-45-67</p>
-        <p>Email: info@meteora.ru</p>
-        <p>&copy; 2026 Отель Метеора</p>
+        <p>Email: info@alpine.ru</p>
+        <p>&copy; 2026 Отель Альпийский</p>
     </footer>
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getDatabase, ref, push, onValue, remove } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
-  // ТВОЯ КОНФИГУРАЦИЯ (вставь скопированный объект)
-  const firebaseConfig = {
-    apiKey: "AIzaSyDbM0i8uzgyxaqTmK0egMBtV9bM7wMjr4o",
-    authDomain: "meteora-hotel.firebaseapp.com",
-    databaseURL: "https://meteora-hotel-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "meteora-hotel",
-    storageBucket: "meteora-hotel.firebasestorage.app",
-    messagingSenderId: "997544415776",
-    appId: "1:997544415776:web:9022e4e64b0d3ffdc96245"
-  };
+    <!-- ========== Firebase Compat (работает без сервера) ========== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+  apiKey: "AIzaSyDbM0i8uzgyxaqTmK0egMBtV9bM7wMjr4o",
+  authDomain: "meteora-hotel.firebaseapp.com",
+  databaseURL: "https://meteora-hotel-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "meteora-hotel",
+  storageBucket: "meteora-hotel.firebasestorage.app",
+  messagingSenderId: "997544415776",
+  appId: "1:997544415776:web:9022e4e64b0d3ffdc96245"
+};
 
-  // Инициализируем Firebase и делаем доступным для других скриптов
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
-  window.firebaseDB = database;   // теперь script.js сможет использовать window.firebaseDB
-</script>
+        firebase.initializeApp(firebaseConfig);
+        window.firebaseDB = firebase.database();
+    </script>
+
+    <!-- Основной скрипт сайта -->
     <script src="script.js"></script>
-
 </body>
 </html>

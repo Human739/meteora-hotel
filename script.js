@@ -1,16 +1,22 @@
-// Цены на номера
+/* ==========================================
+   БРОНИРОВАНИЕ
+   ========================================== */
 const roomPrices = {
-    'standard': 2000,
-    'luxe': 10000,
-    'family': 20000
+    standard: 2000,
+    luxe: 10000,
+    family: 20000
 };
 
-// ====== БРОНИРОВАНИЕ ======
-const bookingForm = document.getElementById('bookingForm');
-const roomSelect = document.getElementById('roomSelect');
-const nameInput = bookingForm.querySelector('input[type="text"]');
-const emailInput = bookingForm.querySelector('input[type="email"]');
+// Ищем форму бронирования внутри секции #booking
+const bookingSection = document.getElementById('booking');
+const bookingForm = bookingSection.querySelector('form');
+const bookingNameInput = bookingForm.querySelector('input[placeholder="Ваше имя"]');
+const bookingEmailInput = bookingForm.querySelector('input[placeholder="Ваша почта"]');
+const roomSelect = bookingForm.querySelector('select');
+const checkinInput = bookingForm.querySelectorAll('input[type="date"]')[0];
+const checkoutInput = bookingForm.querySelectorAll('input[type="date"]')[1];
 
+// Динамическая цена
 let priceDisplay = document.querySelector('.price-display');
 if (!priceDisplay) {
     priceDisplay = document.createElement('p');
@@ -22,85 +28,113 @@ if (!priceDisplay) {
     bookingForm.insertBefore(priceDisplay, bookingForm.querySelector('button'));
 }
 
-roomSelect.addEventListener('change', function() {
-    const selectedRoom = this.value;
-    if (selectedRoom) {
-        const price = roomPrices[selectedRoom];
-        priceDisplay.textContent = `Цена: ${price} рублей за ночь`;
+roomSelect.addEventListener('change', function () {
+    const selected = this.value;
+    if (selected && roomPrices[selected]) {
+        priceDisplay.textContent = `Цена: ${roomPrices[selected]} ₽ за ночь`;
     } else {
         priceDisplay.textContent = '';
     }
 });
 
-function loadSavedData() {
-    const savedName = localStorage.getItem('userName');
-    const savedEmail = localStorage.getItem('userEmail');
-    const savedRoom = localStorage.getItem('userRoom');
-
-    if (savedName) nameInput.value = savedName;
-    if (savedEmail) emailInput.value = savedEmail;
-    if (savedRoom) {
+// Загрузка сохранённых данных
+function loadBookingData() {
+    const savedName = localStorage.getItem('bookingName');
+    const savedEmail = localStorage.getItem('bookingEmail');
+    const savedRoom = localStorage.getItem('bookingRoom');
+    if (savedName) bookingNameInput.value = savedName;
+    if (savedEmail) bookingEmailInput.value = savedEmail;
+    if (savedRoom && roomSelect.querySelector(`option[value="${savedRoom}"]`)) {
         roomSelect.value = savedRoom;
         roomSelect.dispatchEvent(new Event('change'));
     }
 }
+loadBookingData();
 
-bookingForm.addEventListener('submit', function(event) {
+// Отправка бронирования
+bookingForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim();
+    const name = bookingNameInput.value.trim();
+    const email = bookingEmailInput.value.trim();
     const roomType = roomSelect.value;
 
     if (name.length < 3) {
         alert('Имя должно содержать минимум 3 буквы!');
         return;
     }
-
     if (!email.includes('@') || !email.includes('.')) {
         alert('Пожалуйста, введите корректный email!');
         return;
     }
-
     if (!roomType) {
-        alert('Пожалуйста, выберите тип номера!');
+        alert('Выберите тип номера!');
         return;
     }
 
-    localStorage.setItem('userName', name);
-    localStorage.setItem('userEmail', email);
-    localStorage.setItem('userRoom', roomType);
+    localStorage.setItem('bookingName', name);
+    localStorage.setItem('bookingEmail', email);
+    localStorage.setItem('bookingRoom', roomType);
 
     const price = roomPrices[roomType];
-    alert(`Спасибо, ${name}!\n\nВаше бронирование:\n${roomType} номер - ${price} рублей\n\nПодтверждение отправлено на ${email}`);
-
+    alert(`Спасибо, ${name}!\n\nВаше бронирование:\n${roomType} номер — ${price} ₽\n\nПодтверждение отправлено на ${email}`);
     bookingForm.reset();
     priceDisplay.textContent = '';
 });
 
-loadSavedData();
-roomSelect.dispatchEvent(new Event('change'));
+/* ==========================================
+   ГАЛЕРЕЯ И МОДАЛЬНОЕ ОКНО
+   ========================================== */
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
+const modalDescription = document.getElementById('modalDescription');
+const modalPrice = document.getElementById('modalPrice');
+const modalClose = document.querySelector('.modal-close');
+const detailButtons = document.querySelectorAll('.details-btn');
 
-/* ---------- Отзывы с Firebase и фильтрацией ---------- */
+detailButtons.forEach(button => {
+    button.addEventListener('click', function () {
+        const card = this.closest('.room-card');
+        const title = card.querySelector('h3').textContent;
+        const description = card.querySelector('p').textContent; // первый <p>
+        const price = card.querySelector('.price').textContent;
+
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+        modalPrice.textContent = 'Цена: ' + price;
+        modal.style.display = 'block';
+    });
+});
+
+modalClose.addEventListener('click', () => { modal.style.display = 'none'; });
+window.addEventListener('click', (event) => {
+    if (event.target === modal) modal.style.display = 'none';
+});
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal.style.display === 'block') {
+        modal.style.display = 'none';
+    }
+});
+
+/* ---------- Отзывы с Firebase (compat) и фильтрацией ---------- */
 const reviewsContainer = document.getElementById('reviews-container');
 const reviewForm = document.getElementById('review-form');
 const reviewNameInput = document.getElementById('review-name');
 const reviewTextInput = document.getElementById('review-text');
 
-// Массив отзывов теперь будет наполняться из Firebase
 let reviews = [];
 let currentFilter = 'all';
 
-// Функция отрисовки звёзд
+// Звёзды в карточке
 function renderStars(rating) {
-    let starsHTML = '';
+    let stars = '';
     for (let i = 1; i <= 5; i++) {
-        starsHTML += (i <= rating) ? '★' : '☆';
+        stars += (i <= rating) ? '★' : '☆';
     }
-    return starsHTML;
+    return stars;
 }
 
-// Рендеринг отзывов с учётом фильтра (эта функция осталась почти без изменений)
+// Отрисовка отзывов с учётом фильтра
 function renderReviews() {
     let filtered = reviews;
     if (currentFilter !== 'all') {
@@ -135,7 +169,7 @@ function renderReviews() {
     });
 }
 
-// Создание кнопок фильтра (без изменений)
+// Кнопки фильтрации
 function createFilterButtons() {
     if (document.querySelector('.reviews-filters')) return;
 
@@ -157,7 +191,7 @@ function createFilterButtons() {
         btn.textContent = f.label;
         btn.dataset.filter = f.value;
         if (f.value === currentFilter) btn.classList.add('active');
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             currentFilter = this.dataset.filter;
@@ -169,15 +203,13 @@ function createFilterButtons() {
     reviewsContainer.parentNode.insertBefore(filtersDiv, reviewsContainer);
 }
 
-// ========== НОВОЕ: работа с Firebase ==========
-
-// Отправка отзыва
-reviewForm.addEventListener('submit', function(event) {
+// Отправка отзыва (compat‑версия)
+reviewForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
     const name = reviewNameInput.value.trim();
     const text = reviewTextInput.value.trim();
-    const ratingInput = document.querySelector('input[name="rating"]:checked');
+    const ratingInput = reviewForm.querySelector('input[name="rating"]:checked');
 
     if (name.length < 2) {
         alert('Имя должно быть не короче 2 символов');
@@ -199,17 +231,17 @@ reviewForm.addEventListener('submit', function(event) {
         date: new Date().toLocaleString('ru-RU')
     };
 
-    // Отправляем в Firebase (путь 'reviews')
-    const db = window.firebaseDB;
-    if (!db) {
-        alert('Ошибка подключения к базе данных. Попробуйте позже.');
+    // Проверяем, инициализирована ли база данных
+    if (!window.firebaseDB) {
+        alert('Ошибка подключения к базе данных. Пожалуйста, обновите страницу.');
         return;
     }
-    const reviewsRef = ref(db, 'reviews');
-    push(reviewsRef, newReview)
+
+    // Получаем ссылку на узел 'reviews' и добавляем запись
+    const reviewsRef = window.firebaseDB.ref('reviews');
+    reviewsRef.push(newReview)
         .then(() => {
             reviewForm.reset();
-            // Массив reviews обновится автоматически через onValue
         })
         .catch(error => {
             console.error('Ошибка отправки:', error);
@@ -217,77 +249,24 @@ reviewForm.addEventListener('submit', function(event) {
         });
 });
 
-// Слушатель изменений в базе — автоматически обновляет отзывы
+// Слушатель изменений в реальном времени
 function startListening() {
-    const db = window.firebaseDB;
-    if (!db) {
-        console.warn('Firebase не инициализирована, отзывы не будут загружены.');
+    if (!window.firebaseDB) {
+        console.warn('Firebase не инициализирована. Отзывы не будут загружены.');
         return;
     }
 
-    const reviewsRef = ref(db, 'reviews');
-    onValue(reviewsRef, (snapshot) => {
+    const reviewsRef = window.firebaseDB.ref('reviews');
+    reviewsRef.on('value', (snapshot) => {
         const data = snapshot.val();
-        // Преобразуем объект Firebase в массив
         reviews = [];
         if (data) {
-            reviews = Object.values(data);  // все отзывы как массив
-            // Сортируем по дате (новые сверху) — если хочешь, можно раскомментировать
-            // reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+            reviews = Object.values(data);
         }
         renderReviews();
     });
 }
 
-// Запуск при загрузке страницы
+// Запуск
 createFilterButtons();
 startListening();
-/* ---------- Модальное окно галереи ---------- */
-const modal = document.getElementById('modal');
-const modalTitle = document.getElementById('modalTitle');
-const modalDescription = document.getElementById('modalDescription');
-const modalPrice = document.getElementById('modalPrice');
-const modalClose = document.querySelector('.modal-close');
-
-// Находим все кнопки "Подробнее"
-const detailButtons = document.querySelectorAll('.details-btn');
-
-// Вешаем обработчик на каждую кнопку
-detailButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        // Находим родительскую карточку
-        const card = this.closest('.room-card');
-        
-        // Извлекаем данные
-        const title = card.querySelector('h3').textContent;
-        const description = card.querySelector('p').textContent;   // первый <p> — описание
-        const price = card.querySelector('.price').textContent;
-        
-        // Заполняем модальное окно
-        modalTitle.textContent = title;
-        modalDescription.textContent = description;
-        modalPrice.textContent = 'Цена: ' + price;
-        
-        // Показываем окно
-        modal.style.display = 'block';
-    });
-});
-
-// Закрытие по клику на крестик
-modalClose.addEventListener('click', function() {
-    modal.style.display = 'none';
-});
-
-// Закрытие по клику вне содержимого окна
-window.addEventListener('click', function(event) {
-    if (event.target === modal) {
-        modal.style.display = 'none';
-    }
-});
-
-// Закрытие по клавише Escape (бонус)
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape' && modal.style.display === 'block') {
-        modal.style.display = 'none';
-    }
-});
