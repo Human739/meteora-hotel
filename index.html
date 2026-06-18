@@ -3,79 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Отель Альпийский</title>
+    <title>Гранд Отель «Альпийский» — Отдых в горах</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (иконки) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Твой CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Шапка сайта -->
-    <header>
-        <h1>Отель Альпийский</h1>
-        <nav>
-            <a href="#home">Главная</a>
-            <a href="#rooms">Номера</a>
-            <a href="#gallery">Галерея</a>
-            <a href="#booking">Бронирование</a>
-            <a href="#reviews">Отзывы</a>
-            <a href="#contacts">Контакты</a>
-        </nav>
+    <!-- ========== Шапка (фиксированная) ========== -->
+    <header id="header">
+        <div class="container">
+            <a href="#home" class="logo">Альпийский</a>
+            <nav>
+                <a href="#home">Главная</a>
+                <a href="#rooms">Номера</a>
+                <a href="#gallery">Галерея</a>
+                <a href="#booking">Бронирование</a>
+                <a href="#reviews">Отзывы</a>
+                <a href="#contacts">Контакты</a>
+            </nav>
+            <button class="burger" id="burger">☰</button>
+        </div>
     </header>
 
-    <!-- Главное изображение -->
-    <section id="home">
-        <h2>Добро пожаловать в наш отель!</h2>
-        <p>Уютное место отдыха в сердце гор</p>
-    </section>
-
-    <!-- Номера (кратко) -->
-    <section id="rooms">
-        <h2>Наши номера</h2>
-        <div class="room">
-            <h3>Стандартный номер</h3>
-            <p>Двуспальная кровать, ванная комната, вид на город</p>
-            <p>Цена: 2000 ₽ за ночь</p>
-        </div>
-        <div class="room">
-            <h3>Люкс</h3>
-            <p>2 комнаты, джакузи, панорамный балкон</p>
-            <p>Цена: 10000 ₽ за ночь</p>
-        </div>
-        <div class="room">
-            <h3>Семейный номер</h3>
-            <p>3 комнаты, кухня, гостиная</p>
-            <p>Цена: 20000 ₽ за ночь</p>
+    <!-- ========== Hero-секция ========== -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Отдохните в сердце Альп</h1>
+            <p>Роскошные номера, панорамные виды и безупречный сервис</p>
+            <a href="#booking" class="btn-primary">Забронировать номер</a>
         </div>
     </section>
 
-    <!-- Галерея номеров -->
-    <section id="gallery">
-        <h2>Галерея номеров</h2>
-        <div class="gallery-grid">
-            <div class="room-card">
-                <img src="https://picsum.photos/400/250?random=1" alt="Стандартный номер">
-                <h3>Стандартный номер</h3>
-                <p>Уютный номер с двуспальной кроватью и видом на город.</p>
-                <p class="price">2000 ₽ / ночь</p>
-                <button class="details-btn">Подробнее</button>
-            </div>
-            <div class="room-card">
-                <img src="https://picsum.photos/400/250?random=2" alt="Люкс номер">
-                <h3>Люкс</h3>
-                <p>Две комнаты, джакузи, панорамный балкон.</p>
-                <p class="price">10000 ₽ / ночь</p>
-                <button class="details-btn">Подробнее</button>
-            </div>
-            <div class="room-card">
-                <img src="https://picsum.photos/400/250?random=3" alt="Семейный номер">
-                <h3>Семейный номер</h3>
-                <p>Три комнаты, кухня, гостиная — идеально для семьи.</p>
-                <p class="price">20000 ₽ / ночь</p>
-                <button class="details-btn">Подробнее</button>
+    <!-- ========== Кратко о номерах ========== -->
+    <section id="rooms" class="section">
+        <div class="container">
+            <h2 class="section-title">Наши номера</h2>
+            <div class="rooms-grid">
+                <div class="room-card">
+                    <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&h=400&fit=crop" alt="Стандартный номер">
+                    <div class="room-info">
+                        <h3>Стандартный</h3>
+                        <p>Уютный номер с двуспальной кроватью и видом на горы</p>
+                        <div class="room-footer">
+                            <span class="price">от 2 000 ₽ / ночь</span>
+                            <button class="details-btn">Подробнее</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="room-card">
+                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&h=400&fit=crop" alt="Люкс">
+                    <div class="room-info">
+                        <h3>Люкс</h3>
+                        <p>Две комнаты, джакузи, панорамный балкон</p>
+                        <div class="room-footer">
+                            <span class="price">от 10 000 ₽ / ночь</span>
+                            <button class="details-btn">Подробнее</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="room-card">
+                    <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600&h=400&fit=crop" alt="Семейный номер">
+                    <div class="room-info">
+                        <h3>Семейный</h3>
+                        <p>Три комнаты, кухня, гостиная — идеально для семьи</p>
+                        <div class="room-footer">
+                            <span class="price">от 20 000 ₽ / ночь</span>
+                            <button class="details-btn">Подробнее</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Модальное окно для галереи -->
+    <!-- ========== Галерея (сохранена, но с реальными фото) ========== -->
+    <section id="gallery" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Галерея</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&h=400&fit=crop" alt="Отель снаружи">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&h=400&fit=crop" alt="Лобби">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&h=400&fit=crop" alt="Ресторан">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1564078516393-cf0fe125b0bf?w=600&h=400&fit=crop" alt="Спа">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=600&h=400&fit=crop" alt="Номер с видом">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1549638441-b787d2e11f14?w=600&h=400&fit=crop" alt="Терраса">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== Бронирование ========== -->
+    <section id="booking" class="section">
+        <div class="container">
+            <h2 class="section-title">Забронировать номер</h2>
+            <form id="booking-form" class="booking-form">
+                <div class="form-row">
+                    <input type="text" placeholder="Ваше имя" required>
+                    <input type="email" placeholder="Электронная почта" required>
+                </div>
+                <div class="form-row">
+                    <input type="date" required>
+                    <input type="date" required>
+                </div>
+                <select required>
+                    <option value="">Выберите тип номера</option>
+                    <option value="standard">Стандартный</option>
+                    <option value="luxe">Люкс</option>
+                    <option value="family">Семейный</option>
+                </select>
+                <button type="submit" class="btn-primary">Забронировать</button>
+            </form>
+            <div class="price-display"></div>
+        </div>
+    </section>
+
+    <!-- ========== Отзывы ========== -->
+    <section id="reviews" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Отзывы гостей</h2>
+            <div id="reviews-container"></div>
+
+            <div class="review-form-wrapper">
+                <h3>Оставьте свой отзыв</h3>
+                <form id="review-form" class="review-form">
+                    <input type="text" id="review-name" placeholder="Ваше имя" required>
+                    <div class="rating-input">
+                        <span>Оценка:</span>
+                        <div class="stars">
+                            <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                            <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                            <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                            <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                            <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                        </div>
+                    </div>
+                    <textarea id="review-text" rows="4" placeholder="Поделитесь впечатлениями..." required></textarea>
+                    <button type="submit" class="btn-primary">Отправить отзыв</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== Контакты ========== -->
+    <footer id="contacts">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>Гранд Отель «Альпийский»</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Горная улица, 12, Курортный город, Альпы</p>
+                <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+                <p><i class="fas fa-envelope"></i> info@alpine-hotel.ru</p>
+            </div>
+            <div class="footer-col">
+                <h3>Мы в соцсетях</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Отель Альпийский. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно (без изменений) -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
@@ -85,61 +198,7 @@
         </div>
     </div>
 
-    <!-- Форма бронирования -->
-    <section id="booking">
-        <h2>Забронировать номер</h2>
-        <form id="booking-form">
-            <input type="text" placeholder="Ваше имя" required>
-            <input type="email" placeholder="Ваша почта" required>
-            <input type="date" required>
-            <input type="date" required>
-            <select required>
-                <option value="">Выберите тип номера</option>
-                <option value="standard">Стандартный</option>
-                <option value="luxe">Люкс</option>
-                <option value="family">Семейный</option>
-            </select>
-            <button type="submit">Забронировать</button>
-        </form>
-    </section>
-
-    <!-- Отзывы -->
-    <section id="reviews">
-        <h2>Отзывы наших гостей</h2>
-
-        <div id="reviews-container"></div>
-
-        <div class="review-form">
-            <h3>Оставьте свой отзыв</h3>
-            <form id="review-form">
-                <input type="text" id="review-name" placeholder="Ваше имя" required>
-
-                <div class="rating-input">
-                    <span>Ваша оценка:</span>
-                    <div class="stars">
-                        <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
-                        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
-                        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
-                        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
-                        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
-                    </div>
-                </div>
-
-                <textarea id="review-text" rows="4" placeholder="Поделитесь впечатлениями..." required></textarea>
-                <button type="submit">Отправить отзыв</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Контакты -->
-    <footer id="contacts">
-        <h3>Свяжитесь с нами</h3>
-        <p>Телефон: +7 (999) 123-45-67</p>
-        <p>Email: info@alpine.ru</p>
-        <p>&copy; 2026 Отель Альпийский</p>
-    </footer>
-
-    <!-- ========== Firebase Compat (работает без сервера) ========== -->
+    <!-- Firebase Compat (как было) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script>
@@ -152,12 +211,18 @@
   messagingSenderId: "997544415776",
   appId: "1:997544415776:web:9022e4e64b0d3ffdc96245"
 };
-
         firebase.initializeApp(firebaseConfig);
         window.firebaseDB = firebase.database();
     </script>
-
-    <!-- Основной скрипт сайта -->
     <script src="script.js"></script>
+
+    <!-- Скрипт для мобильного меню (бургер) -->
+    <script>
+        const burger = document.getElementById('burger');
+        const nav = document.querySelector('header nav');
+        burger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
